@@ -18,25 +18,17 @@ RSpec.describe "/subjects", type: :request do
   # Subject. As you add validations to Subject, be sure to
   # adjust the attributes here as well.
   let(:valid_attributes) {
-    skip("Add a hash of attributes valid for your model")
+    build(:subject).attributes
   }
 
   let(:invalid_attributes) {
-    skip("Add a hash of attributes invalid for your model")
+    build(:subject, :invalid).attributes
   }
 
   describe "GET /index" do
     it "renders a successful response" do
       Subject.create! valid_attributes
       get subjects_url
-      expect(response).to be_successful
-    end
-  end
-
-  describe "GET /show" do
-    it "renders a successful response" do
-      subject = Subject.create! valid_attributes
-      get subject_url(subject)
       expect(response).to be_successful
     end
   end
@@ -66,7 +58,7 @@ RSpec.describe "/subjects", type: :request do
 
       it "redirects to the created subject" do
         post subjects_url, params: { subject: valid_attributes }
-        expect(response).to redirect_to(subject_url(Subject.last))
+        expect(response).to redirect_to(subjects_path)
       end
     end
 
@@ -77,10 +69,9 @@ RSpec.describe "/subjects", type: :request do
         }.to change(Subject, :count).by(0)
       end
 
-    
       it "renders a response with 422 status (i.e. to display the 'new' template)" do
         post subjects_url, params: { subject: invalid_attributes }
-        expect(response).to have_http_status(:unprocessable_entity)
+        expect(response).to redirect_to(new_subject_path)
       end
     
     end
@@ -89,30 +80,29 @@ RSpec.describe "/subjects", type: :request do
   describe "PATCH /update" do
     context "with valid parameters" do
       let(:new_attributes) {
-        skip("Add a hash of attributes valid for your model")
+        build(:subject, name: "new_name").attributes
       }
 
       it "updates the requested subject" do
         subject = Subject.create! valid_attributes
         patch subject_url(subject), params: { subject: new_attributes }
         subject.reload
-        skip("Add assertions for updated state")
+        expect(subject.name).to eq("new_name")
       end
 
       it "redirects to the subject" do
         subject = Subject.create! valid_attributes
         patch subject_url(subject), params: { subject: new_attributes }
         subject.reload
-        expect(response).to redirect_to(subject_url(subject))
+        expect(response).to redirect_to(subjects_path)
       end
     end
 
     context "with invalid parameters" do
-    
       it "renders a response with 422 status (i.e. to display the 'edit' template)" do
         subject = Subject.create! valid_attributes
         patch subject_url(subject), params: { subject: invalid_attributes }
-        expect(response).to have_http_status(:unprocessable_entity)
+        expect(response).to redirect_to(edit_subject_path(subject))
       end
     
     end
