@@ -22,7 +22,7 @@ RSpec.describe "/subjects", type: :request do
   }
 
   let(:invalid_attributes) {
-    build(:subject, :invalid).attributes
+    build(:subject, name: "").attributes
   }
 
   describe "GET /index" do
