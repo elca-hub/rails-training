@@ -26,7 +26,7 @@ RSpec.describe "/subjects", type: :request do
   }
 
   describe "GET /index" do
-    it "renders a successful response" do
+    it "正しいレスポンスが返ってくる" do
       Subject.create! valid_attributes
       get subjects_url
       expect(response).to be_successful
@@ -34,14 +34,14 @@ RSpec.describe "/subjects", type: :request do
   end
 
   describe "GET /new" do
-    it "renders a successful response" do
+    it "正しいレスポンスが返ってくる" do
       get new_subject_url
       expect(response).to be_successful
     end
   end
 
   describe "GET /edit" do
-    it "renders a successful response" do
+    it "正しいレスポンスが返ってくる" do
       subject = Subject.create! valid_attributes
       get edit_subject_url(subject)
       expect(response).to be_successful
@@ -49,27 +49,27 @@ RSpec.describe "/subjects", type: :request do
   end
 
   describe "POST /create" do
-    context "with valid parameters" do
-      it "creates a new Subject" do
+    context "正しい値の場合" do
+      it "新しい科目が追加される" do
         expect {
           post subjects_url, params: { subject: valid_attributes }
         }.to change(Subject, :count).by(1)
       end
 
-      it "redirects to the created subject" do
+      it "科目一覧へリダイレクトする" do
         post subjects_url, params: { subject: valid_attributes }
         expect(response).to redirect_to(subjects_path)
       end
     end
 
-    context "with invalid parameters" do
-      it "does not create a new Subject" do
+    context "不正な値の場合" do
+      it "新しい科目が追加されない" do
         expect {
           post subjects_url, params: { subject: invalid_attributes }
         }.to change(Subject, :count).by(0)
       end
 
-      it "renders a response with 422 status (i.e. to display the 'new' template)" do
+      it "科目追加画面へリダイレクトされる" do
         post subjects_url, params: { subject: invalid_attributes }
         expect(response).to redirect_to(new_subject_path)
       end
@@ -78,19 +78,19 @@ RSpec.describe "/subjects", type: :request do
   end
 
   describe "PATCH /update" do
-    context "with valid parameters" do
+    context "正しい値の場合" do
       let(:new_attributes) {
         build(:subject, name: "new_name").attributes
       }
 
-      it "updates the requested subject" do
+      it "教科の内容が更新される" do
         subject = Subject.create! valid_attributes
         patch subject_url(subject), params: { subject: new_attributes }
         subject.reload
         expect(subject.name).to eq("new_name")
       end
 
-      it "redirects to the subject" do
+      it "科目一覧へリダイレクトされる" do
         subject = Subject.create! valid_attributes
         patch subject_url(subject), params: { subject: new_attributes }
         subject.reload
@@ -98,8 +98,8 @@ RSpec.describe "/subjects", type: :request do
       end
     end
 
-    context "with invalid parameters" do
-      it "renders a response with 422 status (i.e. to display the 'edit' template)" do
+    context "不正な値の場合" do
+      it "科目編集画面へリダイレクトする" do
         subject = Subject.create! valid_attributes
         patch subject_url(subject), params: { subject: invalid_attributes }
         expect(response).to redirect_to(edit_subject_path(subject))
@@ -109,14 +109,14 @@ RSpec.describe "/subjects", type: :request do
   end
 
   describe "DELETE /destroy" do
-    it "destroys the requested subject" do
+    it "科目が削除される" do
       subject = Subject.create! valid_attributes
       expect {
         delete subject_url(subject)
       }.to change(Subject, :count).by(-1)
     end
 
-    it "redirects to the subjects list" do
+    it "科目一覧へリダイレクトされる" do
       subject = Subject.create! valid_attributes
       delete subject_url(subject)
       expect(response).to redirect_to(subjects_url)
