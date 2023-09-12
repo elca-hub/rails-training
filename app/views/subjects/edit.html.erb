@@ -4,4 +4,10 @@
 
 <%= render "form", subject: @subject %>
 
+<%= form_with url: subject_path(@subject), method: :delete do |f| %>
+  <div class="my-4 text-center">
+    <%= f.submit "削除", class: "btn btn-outline-danger" %>
+  </div>
+<% end %>
+
 <%= render "back" %>
