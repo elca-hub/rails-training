@@ -40,6 +40,17 @@ RSpec.describe Subject, type: :model do
           expect(subject).to be_invalid
         end
       end
+
+      context "値が重複している場合" do
+        duplicate_name = 'duplicate'
+        before { create(:subject, name: duplicate_name) }
+
+        it '無効' do
+          subject.name = duplicate_name
+
+          expect(subject).to be_invalid
+        end
+      end
     end
 
     describe "evaluation" do
