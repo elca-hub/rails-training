@@ -1,5 +1,13 @@
 <% provide(:page_title, "科目一覧") %>
 
+<% if @subjects.present? %>
+  <div class="view-gpa text-center my-4" data-gpa="<%= calc_gpa(@subjects) %>">
+    <h2>あなたのGPA</h2>
+    <h1 id="viewGpa"></h1>
+    <p id="comment" class="gpa-comment">-</p>
+  </div>
+<% end %>
+
 <div class="subject-list">
   <h2 class="text-center my-2">科目一覧</h2>
 
@@ -7,27 +15,39 @@
     <%= link_to "科目の追加", new_subject_path, class: "btn btn-primary" %>
   </div>
 
-  <table class="table table-striped text-center">
-    <thead>
-      <tr>
-        <th scope="col">#</th>
-        <th scope="col">科目名</th>
-        <th scope="col">評価</th>
-        <th scope="col">単位数</th>
-        <th scope="col">変更</th>
-      </tr>
-    </thead>
-
-    <tbody>
-      <% @subjects.each_with_index do |s, index| %>
+  <% if @subjects.present? %>
+    <table class="table table-striped text-center">
+      <thead>
         <tr>
-          <th scope="row"><%= index + 1 %></th>
-          <td><%= s.name %></td>
-          <td><%= s.evaluation %></td>
-          <td><%= s.unit_value %></td>
-          <td><%= link_to "編集", edit_subject_path(s) %></td>
+          <th scope="col">#</th>
+          <th scope="col">科目名</th>
+          <th scope="col">評価</th>
+          <th scope="col">単位数</th>
+          <th scope="col">変更</th>
         </tr>
-      <% end %>
-    </tbody>
-  </table>
+      </thead>
+
+      <tbody>
+        <% @subjects.each_with_index do |s, index| %>
+          <tr>
+            <th scope="row"><%= index + 1 %></th>
+            <td><%= s.name %></td>
+            <td><%= s.evaluation %></td>
+            <td><%= s.unit_value %></td>
+            <td><%= link_to "編集", edit_subject_path(s) %></td>
+          </tr>
+        <% end %>
+      </tbody>
+
+      <tbody>
+        <tr>
+          <th scope="row">合計</th>
+          <td>-</td>
+          <td>-</td>
+          <td><%= @subjects.sum(:unit_value) %></td>
+          <td>-</td>
+        </tr>
+      </tbody>
+    </table>
+  <% end %>
 </div>
