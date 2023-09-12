@@ -3,30 +3,34 @@ import "@hotwired/turbo-rails"
 import "controllers"
 
 async function gpaCountUp(gpaValue) {
+    function fetchTime(t, s, x) {
+        const y = Math.sqrt(1 - ((x - t) / t) ** 2) * s
+
+        return Math.ceil(y * 100) / 100
+    }
+
+    const duration = 5000
+
+    const startTime = performance.now()
+
     return new Promise((resolve) => {
         const targetDom = document.getElementById('viewGpa')
 
-        const startTime = performance.now()
-
-        const getDecimalPointLength = (n) => {
-            return (String(n).split('.')[1] || '').length
-        }
-
-        const deciamlPointLength = getDecimalPointLength(gpaValue)
-
-        let duration = 1500
+        const textGpa = gpaValue.toFixed(2)
 
         const countUp = () => {
-            const elapsed = performance.now() - startTime
-            const countValue = (((elapsed / duration) * gpaValue)).toFixed(deciamlPointLength)
+            const viewTimeNum = fetchTime(duration, textGpa, performance.now() - startTime)
 
-            if (countValue >= gpaValue) {
-                targetDom.innerText = gpaValue.toLocaleString()
+            
+            if (viewTimeNum >= gpaValue) {
+                targetDom.innerText = textGpa
+
                 resolve(true)
-            } else {
-                targetDom.innerText = parseFloat(countValue).toLocaleString()
-                requestAnimationFrame(countUp)
+                return
             }
+
+            targetDom.innerText = viewTimeNum.toFixed(2)
+            requestAnimationFrame(countUp)
         }
 
         requestAnimationFrame(countUp)
