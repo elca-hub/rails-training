@@ -45,7 +45,11 @@ class SubjectsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_subject
-      @subject = Subject.find(params[:id])
+      begin
+        @subject = Subject.find(params[:id]) 
+      rescue ActiveRecord::RecordNotFound
+        redirect_to subjects_path, alert: "Subject was not found."
+      end
     end
 
     # Only allow a list of trusted parameters through.

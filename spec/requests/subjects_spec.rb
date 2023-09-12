@@ -46,6 +46,13 @@ RSpec.describe "/subjects", type: :request do
       get edit_subject_url(subject)
       expect(response).to be_successful
     end
+
+    context "存在しない科目の場合" do
+      it "科目一覧へリダイレクトする" do
+        get edit_subject_url(0)
+        expect(response).to redirect_to(subjects_path)
+      end
+    end
   end
 
   describe "POST /create" do
