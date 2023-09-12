@@ -1,0 +1,12 @@
+.view-gpa {
+    h1 {
+        font-size: 8rem;
+    }
+
+    .gpa-comment {
+        font-size: 2rem;
+        color: #efd83d;
+        opacity: 0;
+        transition: opacity 0.5s ease-in-out;
+    }
+}
