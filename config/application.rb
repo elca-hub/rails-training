@@ -10,6 +10,7 @@ module Myapp
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 7.0
+    config.active_record.default_timezone = :local
 
     # Configuration for the application, engines, and railties goes here.
     #
@@ -18,5 +19,6 @@ module Myapp
     #
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
+    config.time_zone = 'Tokyo'
   end
 end
